@@ -3,6 +3,7 @@
 ===============
 
 V10.1.0版本--JEWEL
+
 此次主版本的更新将是下一个长期稳定发行版的基础版本。在Infernalis（9.2.X）版本和Hammer（0.94.X）版本后，我们做了许多重大修改，而且更新过程并不简单哦，请仔细阅读版本说明。
 
 这个候选版本有几个已知的issues，参见下文。
@@ -13,43 +14,43 @@ V10.1.0版本已知issues
 
 ## 在INFERNALIS版本上进行的重要修改 ##
 
-- #####*CephFS*
+- *CephFS*
 -  这是第一个CephFS宣称稳定并且生产就绪的版本！一些功能默认被禁用了，包含快照和多活MDS server
 -  修复及灾备工具现已功能完善
 -  包含了一个新模块cephfs-volume-manager，它提供了一个高级接口用来为Openstack Manila和相似的工程创建共享（shares）
 -  现在实验性的在单一集群中支持多CephFS文件系统。
-- #####*RWG*
+- *RWG*
 -  Multisite功能已几乎完全被重构和重写，以便支持任意数量的集群节点、双向故障切换和双活设置
 -  现在可以通过NFS访问radosgw buckets（实验性的）
 -  现已支持AWS4认证协议
 -  支持S3请求payer buckets
 -  新的多租户架构改善了与Swift的兼容性，为每个用户租户提供了独立容器名称空间
 -  现已支持Openstack Keystone v3 API。同时也有一些Switf API的其他小功能和兼容性上的改变，例如删除bulk和SLO（static large objects）
-- #####*RBD*
+- *RBD*
 -  新引入了跨集群异步备份（asynchronous replication）RBD镜像的支持。这是通过per-RBD镜像日志来实现的，该日志可经流式处理后通过WAN传输到另一节点，同时一个新的rbd-mirror守护进程来执行跨集群副本操作。
 -  Exlusive-lock、object-map、fast-diff和journaling功能可以动态的开启和禁用。Deep-flatten可动态关闭但不能动态重新启用。
      	-  重写了RBD CLI用来提供命令行帮助说明和full bash的完全支持
  		-  现在可以重命名RBD快照
-- #####*RADOS*
+- *RADOS*
 -  包含了一个实验性的功能—BlueStore，它是一个新的OSD后端。计划在K或L版本中让它成文默认的后端。
 -  OSD现在持久化清洗后的结果（scrub results）并提供了librados进行精细查询，包含异常发现特性、获取与某一特定对象相同的替代版本（如果存在）的功能和细粒度控制的修复。
 
 ## 在HAMMER版本上进行的重要修改 ##
 
-- #####*General*
+- *General*
 -  Ceph的守护进程现已通过systemd来管理(Ubuntu Trusty是个例外，仍沿用upstart来管理)。
 		-  Ceph的守护进程以ceph用户而非root运行。
 		-  在Red Hat的发行版本中，也存在SeLinux Policy。
-- #####*RADOS*
+- *RADOS*
 		-  RADOS的cache层现在可通过代理将写操作发送到持久层(base tier)，允许直接处理写操作无需先强制将对象移至cache层。
 		-  对SHEC 纠删码的支持已不再标记为实验性的。SHEC通过消耗一些额外的存储空间来换取更快的修复速度。
 		-  为（优化）客户端IO、数据恢复、数据清理、快照裁剪提供统一的队列。
 		-  对低层级的修复工具（ceph-objectstore-tool）做了许多改进。
 		-  为方便使用新的存储后端（如NewStore），内部ObjectStore API已做了重大的修改。
-- #####*RGW*
+- *RGW*
 		-  Swift API现已支持对象过期机制
 		-  Swift API的兼容性得到了很大的改善
-- #####*RBD*
+- *RBD*
 		- 通过rbd du命令显示实际的使用（容量）信息（当object-map处于enabled状态时该操作很快）
 		- 对object-map特性的稳定性做了许多改善。
 		- object-map和exclusive-lock特性可动态的开启或者关闭。
@@ -58,7 +59,7 @@ V10.1.0版本已知issues
 		- 更快的export-diff命令（使用了aio）。另外新增了fast-diff特性。
 		- 可通过单位后缀指定-size参数大小（如--size 64G）。
 		- 有一个新的rbd status命令，现在可通过该命令来显示谁打开映射了某个镜像。
-- #####*CephFS*
+- *CephFS*
 - 现已可对快照进行重命名操作。
  - 在管理、诊断、检查和修复工具上已作出了持续的改善。
  - 由未使用inode引发的client端cache状态的缓存和撤回问题已经得到极大的改善。
