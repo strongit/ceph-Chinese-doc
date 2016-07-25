@@ -2,27 +2,29 @@
  Ceph 对象网关的配置
 =====================
 
-要配置 Ceph 对象网关需要一个运行着的 Ceph 存储集群，还有启用了 FastCGI 模块\
-的 Apache 网页服务器。
+配置 Ceph 对象网关需要一个运行着的 Ceph 存储集群，而且由于自带内嵌web服务器\
+（civetweb），所以可以不需要额外配置外部服务器，虽然可以使用启用了 FastCGI \
+模块的 Apache 网页服务器。
+
+注：
+CGI图形接口可能会带来安全风险。
 
 Ceph 对象网关是 Ceph 存储集群的一个客户端，作为 Ceph 存储集群的客户端，它需要：
 
-- A name for the gateway instance. We use ``gateway`` in this guide.
-- A storage cluster user name with appropriate permissions in a keyring.
-- Pools to store its data.
-- A data directory for the gateway instance.
-- An instance entry in the Ceph Configuration file.
-- A configuration file for the web server to interact with FastCGI.
+- 网关实例名，手册中我们称为
+- 一个在密码系统中拥有相应权限的存储集群用户名.
+- 存储数据池.
+- 实例的数据目录.
+- Ceph配置文件里的实例项.
+- 与FastCGI交互的web服务器配置文件.
 
 
-Create a User and Keyring
+创建用户和密码
 =========================
 
-Each instance must have a user name and key to communicate with a Ceph Storage
-Cluster. In the following steps, we use an admin node to create a keyring. 
-Then, we create a client user name and key. Next, we add the 
-key to the Ceph Storage Cluster. Finally, we distribute the key ring to 
-the node containing the gateway instance.
+每个实例都必须拥有用户名和密码，用于连接Ceph存储集群。接下来我们将使用admin
+账号创建密钥圈，然后创建客户端用户名和密码并将密钥加入到集群中。最后，
+将密钥分发到网关实例的每个节点。
 
 .. topic:: Monitor Key CAPS
 
