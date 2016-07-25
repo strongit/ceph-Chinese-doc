@@ -19,11 +19,11 @@ Ceph 对象网关是 Ceph 存储集群的一个客户端，作为 Ceph 存储集
 - 与FastCGI交互的web服务器配置文件.
 
 
-创建用户和密码
+创建用户和密钥环
 =========================
 
-每个实例都必须拥有用户名和密码，用于连接Ceph存储集群。接下来我们将使用admin
-账号创建密钥圈，然后创建客户端用户名和密码并将密钥加入到集群中。最后，
+每个实例都必须拥有用户名和密码，用于连接Ceph存储集群，接下来我们将使用admin\
+账号创建密钥环。首先创建客户端用户名和密码并将密钥加入到集群中。最后，\
 将密钥分发到网关实例的每个节点。
 
 .. topic:: Monitor Key CAPS
@@ -78,11 +78,8 @@ Ceph 对象网关是 Ceph 存储集群的一个客户端，作为 Ceph 存储集
 创建存储池
 ==========
 
-Ceph Object Gateways require Ceph Storage Cluster pools to store specific
-gateway data.  If the user you created has permissions, the gateway
-will create the pools automatically. However, you should ensure that you have
-set an appropriate default number of placement groups per pool into your Ceph
-configuration file.
+Ceph对象网关要求Ceph存储集群池能存储特定网关的数据.  拥有权限的用户，网关会自动创建存储池。\
+确保配置文件为每个存储池设置了适当的默认值。
 
 .. note:: Ceph 对象网关有多个存储池，考虑到所有存储池会共用相同的 CRUSH 分级\
    结构，所以 PG 数不要设置得过大，否则会影响性能。
@@ -128,11 +125,8 @@ To create a pool manually, execute the following::
 为 Ceph 新增网关配置
 ====================
 
-Add the Ceph Object Gateway configuration to your Ceph Configuration file in
-``admin node``. The Ceph Object Gateway configuration requires you to
-identify the Ceph Object Gateway instance. Then, you must specify the host name
-where you installed the Ceph Object Gateway daemon, a keyring (for use with
-cephx), the socket path for FastCGI and a log file.
+在配置文件的``admin node``处，增加网关配置，需要指定对象实例，需要指定安装守护程序的主机名\
+，密钥，FASTCGI的socket路径和日志文件等。
 
 For distros with Apache 2.2 and early versions of Apache 2.4 (RHEL 6, Ubuntu
 12.04, 14.04 etc), append the following configuration to ``/etc/ceph/ceph.conf``
@@ -190,11 +184,10 @@ configuration issues. For example::
 	debug rgw = 20
 
 
-Distribute updated Ceph configuration file
+Ceph配置文件的分发
 ==========================================
 
-The updated Ceph configuration file needs to be distributed to all Ceph cluster
-nodes from the ``admin node``.
+更新后的配置文件需要分发到所有Ceph集群节点。
 
 It involves the following steps:
 
@@ -215,7 +208,7 @@ It involves the following steps:
    Give the hostnames of the other Ceph nodes in place of ``[HOST] [HOST...]``.
 
 
-Copy ceph.client.admin.keyring from admin node to gateway host
+从主节点复制ceph.client.admin.keyring到网关主机
 ==============================================================
 
 As the ``gateway host`` can be a different node that is not part of the cluster,
@@ -231,7 +224,7 @@ the ``gateway host``. To do so, execute the following on ``admin node``::
    ``gateway host``.
 
 
-Create Data Directory
+创建数据目录
 =====================
 
 Deployment scripts may not create the default Ceph Object Gateway data
@@ -246,7 +239,7 @@ To create the directory on the ``gateway host``, execute the following::
 	sudo mkdir -p /var/lib/ceph/radosgw/ceph-radosgw.gateway
 
 
-Adjust Socket Directory Permissions
+调整Socker目录权限
 ===================================
 
 On some distros, the ``radosgw`` daemon runs as the unprivileged ``apache``
@@ -259,7 +252,7 @@ the ``gateway host``::
 	sudo chown apache:apache /var/run/ceph
 
 
-Change Log File Owner
+更改日志文件属主
 =====================
 
 On some distros, the ``radosgw`` daemon runs as the unprivileged ``apache`` UID,
@@ -270,7 +263,7 @@ the following::
 	sudo chown apache:apache /var/log/radosgw/client.radosgw.gateway.log
 
 
-Start radosgw service
+启动radosgw服务
 =====================
 
 The Ceph Object gateway daemon needs to be started. To do so, execute the
@@ -285,7 +278,7 @@ On RPM-based distros::
 	sudo /etc/init.d/ceph-radosgw start
 
 
-Create a Gateway Configuration file
+创建网关配置文件
 ===================================
 
 On the host where you installed the Ceph Object Gateway i.e, ``gateway host``,
@@ -355,7 +348,7 @@ Execute the following steps:
 	</VirtualHost>
 
 
-Restart Apache
+重启Apache服务
 ==============
 
 The Apache service needs to be restarted to accept the new configuration.
@@ -373,7 +366,7 @@ Or::
 	sudo systemctl restart httpd
 
 
-Using The Gateway
+使用网关服务
 =================
 
 To use the REST interfaces, first create an initial Ceph Object Gateway
@@ -564,7 +557,7 @@ Execute the following steps:
 
 		my-new-bucket 2015-02-16T17:09:10.000Z
 
-Test swift access
+测试swift权限
 -----------------
 
 Swift access can be verified via the ``swift`` command line client. The command
